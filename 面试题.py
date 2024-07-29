@@ -2255,6 +2255,460 @@ else:
     print("No match")
 ```
 # 面向对象
+_init__和_new_的区别?
+__init__方法是类的初始化方法，它在对象创建后立即被调用，用于初始化对象的状态。__init__方法通常用于设置对象的属性值或执行其他初始化任务。
+__new__方法是一个静态方法，它在__init__之前被调用，用于创建并返回一个新的实例对象。__new__方法负责分配内存，并返回一个实例对象，然后__init__方法被调用来初始化这个对象。
+
+# 简述面向对象的三大特性。
+面向对象编程（OOP）是一种编程范式，它使用“对象”来设计软件.
+封装: 将数据(属性)和操作数据的方法(行为)捆绑在一起,形成独立对象,对外隐藏对象的内部细节.
+继承: 允许创建新类(子类)基于一个已存在的类(父类或基类).继承父类的属性和方法.
+多态: 指不同类的对象对同一个消息做出响应的能力. 多态通过方法重载(类中定义多个同名方法,但参数列表不同)和方法重写(子类重写父类的方法)来实现.
+
+# 什么是鸭子模型?
+鸭子模型（Duck Typing）是Python编程语言中的一种动态类型检查方法。它基于一个简单的理念：“如果它看起来像鸭子，叫起来像鸭子，那么它就是鸭子。
+鸭子模型的特点
+动态类型：Python是一种动态类型语言，变量在运行时才确定类型，这使得鸭子模型成为可能。
+灵活性：鸭子模型允许开发者在不关心对象具体类型的情况下，使用对象执行操作。
+代码简洁：使用鸭子模型可以减少类型检查的代码，使代码更加简洁。
+
+鸭子模型的应用
+```py
+class Duck:
+    def quack(self):
+        print("Quack, quack!")
+
+class Person:
+    def quack(self):
+        print("I'm quacking like a duck!")
+
+def make_it_quack(duck):
+    duck.quack()
+
+# 两种不同的对象，但都满足“quack”操作的要求
+make_it_quack(Duck())   # 输出: Quack, quack!
+make_it_quack(Person()) # 输出: I'm quacking like a duck!
+# 在这个例子中，make_it_quack函数接受任何具有quack方法的对象，无论这个对象是Duck类的实例还是Person类的实例。只要对象能够执行quack方法，它就可以被make_it_quack函数使用。
+```
+
+# super的作用?
+super()函数用于调用父类（超类）的一个方法。
+
+
+# mro是什么?
+MRO是“Method Resolution Order”的缩写，即方法解析顺序。在Python中，MRO用于确定在多重继承的情况下，当一个方法被调用时，应该按照什么顺序来查找和调用父类中的方法。
+Python使用C3线性化算法来确定MRO。这个算法确保了在多重继承的情况下，方法调用的顺序是明确的，并且遵循一定的规则，以避免出现歧义。
+MRO的特性
+单继承：在单继承的情况下，MRO就是父类的顺序。
+多重继承：在多重继承的情况下，MRO是按照特定的顺序来排列父类的，这个顺序是通过C3线性化算法计算得出的。
+查看MRO
+```py
+class A:
+    pass
+
+class B(A):
+    pass
+
+class C(A):
+    pass
+
+class D(B, C):
+    pass
+
+print(D.__mro__)   # 输出D类的MRO
+print(D.mro())     # 输出D类的MRO
+```
+
+
+# 什么是c3算法?
+C3算法是一种用于确定Python中多重继承类的方法解析顺序（MRO）的算法。它是由Python的创造者Guido van Rossum提出的，用于解决多重继承带来的方法调用顺序问题
+C3算法的工作原理
+C3算法基于以下原则：
+1.线性化：将类的继承结构转换为一个线性序列，这个序列就是MRO。
+2.单调性：如果一个类在MRO中出现，那么它的所有父类必须在这个类之前出现。
+3.一致性：如果一个类在MRO中出现两次或更多次，那么它必须是通过不同的路径继承的。
+
+# 列举面向对象中带双下划线的特殊方法。
+1.
+__init__(self, ...): 构造器，用于初始化对象的状态。
+2.
+__del__(self): 析构器，当对象被销毁时调用。
+3.
+__repr__(self): 官方字符串表示，用于调试和开发。
+4.
+__str__(self): 用户友好的字符串表示，用于print()函数等。
+5.
+__call__(self, ...): 使对象可调用，就像函数一样。
+6.
+__len__(self): 返回对象的长度。
+7.
+__getitem__(self, key): 访问容器中的元素。
+8.
+__setitem__(self, key, value): 设置容器中元素的值。
+9.
+__delitem__(self, key): 删除容器中的元素。
+10.
+__iter__(self): 返回迭代器对象。
+11.
+__next__(self): 返回迭代器的下一个元素。
+12.
+__contains__(self, item): 检查容器是否包含某个元素。
+13.
+__add__(self, other): 加法操作。
+14.
+__sub__(self, other): 减法操作。
+15.
+__mul__(self, other): 乘法操作。
+16.
+__truediv__(self, other): 真除法操作。
+17.
+__floordiv__(self, other): 整除操作。
+18.
+__mod__(self, other): 求余操作。
+19.
+__pow__(self, other[, modulo]): 幂运算。
+20.
+__lshift__(self, other): 左移操作。
+21.
+__rshift__(self, other): 右移操作。
+22.
+__and__(self, other): 位与操作。
+23.
+__or__(self, other): 位或操作。
+24.
+__xor__(self, other): 位异或操作。
+25.
+__eq__(self, other): 等于操作。
+26.
+__ne__(self, other): 不等于操作。
+27.
+__lt__(self, other): 小于操作。
+28.
+__le__(self, other): 小于等于操作。
+29.
+__gt__(self, other): 大于操作。
+30.
+__ge__(self, other): 大于等于操作。
+31.
+__enter__(self): 上下文管理器的进入方法。
+32.
+__exit__(self, exc_type, exc_value, traceback): 上下文管理器的退出方法。
+
+# 双下划线和单下划线的区别?
+单下划线_通常用作一种约定，表示变量或方法是内部使用的，不推荐外部直接访问。
+双下划线__用于名称改编，防止子类重写父类的私有成员
+
+实例变量和类变量的区别？
+实例变量
+实例变量是与类的实例（对象）相关联的变量。每个实例都有自己的实例变量副本，因此不同实例的实例变量可以有不同的值。
+
+定义：实例变量通常在类的构造函数__init__中定义，并以self作为前缀。
+作用域：实例变量的作用域限定在类的实例内部，即只能在类的实例方法中访问。
+生命周期：实例变量的生命周期与实例的生命周期相同，当实例被销毁时，实例变量也随之消失。
+类变量
+类变量是与类本身相关联的变量，而不是与类的实例相关联。类变量在所有实例之间共享，因此所有实例看到的类变量值是相同的。
+
+定义：类变量在类的定义体中定义，不需要self前缀，而是使用cls前缀（尽管这不是必须的）。
+作用域：类变量的作用域是整个类，包括类的方法和所有实例。
+生命周期：类变量的生命周期与类的生命周期相同，即使没有创建任何实例，类变量也存在。
+```py
+class MyClass:
+    # 类变量
+    class_variable = "I'm a class variable"
+
+     def __init__(self, value):
+         # 实例变量
+         self.instance_variable = value
+
+# 创建实例
+instance1 = MyClass("Value for instance1")
+instance2 = MyClass("Value for instance2")
+
+# 访问类变量
+print(MyClass.class_variable)  # 输出: I'm a class variable
+print(instance1.class_variable)  # 输出: I'm a class variable
+print(instance2.class_variable)  # 输出: I'm a class variable
+
+# 访问实例变量
+print(instance1.instance_variable)  # 输出: Value for instance1
+print(instance2.instance_variable)  # 输出: Value for instance2
+```
+
+# 静态方法和类方法区别?
+在Python中，静态方法和类方法都是通过装饰器来定义的，它们允许在不创建类实例的情况下调用方法。尽管它们都与类相关联，但它们之间存在一些关键的区别。
+静态方法
+静态方法不依赖于类的实例，也不需要访问类或实例的属性。它们通常用于执行与类相关的操作，但不需要类或实例的状态。
+
+定义：使用@staticmethod装饰器定义。
+调用：可以直接通过类调用，也可以通过实例调用。
+参数：静态方法不接收self或cls参数。
+类方法
+类方法依赖于类本身，而不是类的实例。它们通常用于修改或访问类的状态，例如，创建或修改类的属性。
+
+定义：使用@classmethod装饰器定义。
+调用：可以直接通过类调用，也可以通过实例调用。
+参数：类方法接收一个cls参数，它代表类本身。
+实列:
+```py
+class MyClass:
+    @staticmethod
+     def static_method():
+         print("This is a static method.")
+
+     @classmethod
+     def class_method(cls):
+         print("This is a class method of", cls)
+
+# 调用静态方法
+MyClass.static_method()   # 输出: This is a static method.
+
+# 调用类方法
+MyClass.class_method()    # 输出: This is a class method of <class '__main__.MyClass'>
+```
+总结
+静态方法不依赖于类或实例的状态，主要用于执行与类相关的操作。
+类方法依赖于类本身，用于修改或访问类的状态。
+静态方法使用@staticmethod装饰器定义，不接收self或cls参数。
+类方法使用@classmethod装饰器定义，接收一个cls参数，代表类本身。
+
+# isinstance和type 的作用?
+```py
+class MyClass:
+    pass
+
+# 使用 isinstance 检查类型
+obj = MyClass()
+print(isinstance(obj, MyClass))  # 输出: True
+print(isinstance(obj, type))     # 输出: False
+print(isinstance(obj, (list, dict, type)))  # 输出: False
+
+# 使用 type 获取类型
+print(type(obj))  # 输出: <class '__main__.MyClass'>
+
+# 使用 type 创建新类型
+NewType = type('NewType', (object,), {'x': 1})
+print(NewType)  # 输出: <class '__main__.NewType'>
+print(isinstance(NewType(), NewType))  # 输出: True
+```
+isinstance用于检查对象是否是某个类或其子类的实例，适用于类型确认。
+type用于获取对象的类型或创建新的类型，适用于类型操作。
+
+# 有用过 with statement(语句） 吗？它的好处是什么?
+with语句是Python中一个非常有用的上下文管理器（context manager），它用于管理资源的获取和释放。使用with语句可以确保即使在发生异常的情况下，资源也能被正确地释放。
+好处
+1.
+自动管理资源：with语句可以自动管理资源，如文件、数据库连接等，确保资源在使用后被正确关闭或释放，避免资源泄露。
+2.
+异常安全：即使在with块中发生异常，with语句也能保证资源的释放，这使得代码更加健壮和可靠。
+3.
+代码简洁：使用with语句可以使代码更加简洁和易于阅读，因为不需要显式地编写资源释放的代码。
+```py
+# 使用 with 语句打开文件
+with open('example.txt', 'r') as file:
+    content = file.read()
+    print(content)
+
+# 文件在 with 块结束时自动关闭
+```
+
+# 实现一个Singleton单例类，要求遵循基本语言编程规范（用尽量多的方式）。
+```py
+# 方法一 使用模块
+# singleton.py
+class Singleton:
+    def __init__(self):
+        pass
+
+singleton = Singleton()
+
+# other_module.py
+import singleton
+
+# singleton 实例是同一个
+print(singleton)  # 输出: <singleton.Singleton object at 0x...>
+```
+方法2 使用类装饰器
+```py
+def singleton(cls):
+    instances = {}
+    def get_instance(*args, **kwargs):
+         if cls not in instances:
+             instances[cls] = cls(*args, **kwargs)
+         return instances[cls]
+    return get_instance
+
+@singleton
+class Singleton:
+     def __init__(self):
+         pass
+
+single = Singleton()
+print(single)
+single2 = Singleton()
+print(single2)
+```
+方法3 使用元类
+```py
+class SingletonMeta(type):
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            instance = super().__call__(*args, **kwargs)
+            cls._instances[cls] = instance
+        return cls._instances[cls]
+
+
+class Singleton(metaclass=SingletonMeta):
+    def __init__(self):
+        pass
+
+single = Singleton()
+single2= Singleton()
+print(single,single2)
+```
+
+
+方法4 使用全局变量
+```py
+class Singleton:
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(Singleton, cls).__new__(cls, *args, **kwargs)
+        return cls._instance
+
+    def __init__(self):
+        pass
+
+single = Singleton()
+single2 = Singleton()
+print(single)
+print(single2)
+```
+
+# 请描述with的用法，如果自己的类需要支持with 语句，应该如何书写?
+with语句在Python中用于简化资源管理，如文件操作、数据库连接等。它确保了即使在发生异常的情况下，资源也能被正确地释放。with语句通常与上下文管理器一起使用，上下文管理器是一个实现了__enter__()和__exit__()方法的对象。
+自定义类以支持with语句
+```py
+class MyFile:
+    def __init__(self, filename, mode):
+         self.filename = filename
+         self.mode = mode
+         self.file = open(filename, mode)
+
+     def __enter__(self):
+         return self.file
+
+     def __exit__(self, exc_type, exc_value, traceback):
+         self.file.close()
+         return False
+
+# 使用自定义的文件类
+with MyFile('example.txt', 'w') as f:
+    f.write('Hello, World!')
+```
+
+python 中如何判断一个对象是否可调用？哪些对象可以是可调用对象？如何定义一个类，使其对象本身就是可调用对象?
+callable() 判断对象是否可调用, 如果对象实现了__call__()方法,那么它就是可调用的.
+
+可调用对象:
+    函数: 包括内置和用户定义的函数
+    类实例: 类定义了__call__()方法,那么其实例就是可调用的。
+    方法: 包括实例方法和类方法
+    类: 如果类定义了__call__()方法，那么它本身就是一个可调用对象。
+    生成器函数:  当调用时，生成器函数返回一个生成器对象。
+    自定义对象: 如果自定义类实现了__call__()方法，那么其实例就是可调用的。
+
+定义一个可调用的类
+```py
+
+class MyCallable:
+    def __init__(self, value):
+        self.value = value
+
+    def __call__(self, *args, **kwargs):
+        print(f"Called with args: {args} and kwargs: {kwargs}")
+        return self.value
+
+
+# 创建一个可调用对象
+callable_obj = MyCallable(10)
+
+# 调用对象
+callable_obj()  # 输出: Called with args: () and kwargs: {}
+print(callable_obj(1, 2, a=3))  # 输出: Called with args: (1, 2) and kwargs: {'a': 3}   \n 10
+```
+
+# 请实现一个栈。
+在Python中，可以使用列表（list）来实现一个栈（Stack）。栈是一种后进先出（LIFO）的数据结构，它只允许在栈顶进行添加（push）和移除（pop）元素的操作。
+```py
+class Stack:
+    def __init__(self):
+        self.items = []
+
+    def is_empty(self):
+        return len(self.items) == 0
+    # 将一个元素添加到栈顶。
+    def push(self, item):
+        self.items.append(item)
+    # 移除并返回栈顶元素。如果栈为空，则抛出IndexError异常。
+    def pop(self):
+        if not self.is_empty():
+            return self.items.pop()
+        raise IndexError("pop from an empty stack")
+    # 返回栈顶元素但不移除它。如果栈为空，则抛出IndexError异常。
+    def peek(self):
+        if not self.is_empty():
+            return self.items[-1]
+        raise IndexError("peek from an empty stack")
+    # 返回栈中元素的数量。
+    def size(self):
+        return len(self.items)
+
+# 使用栈
+stack = Stack()
+stack.push(1)
+stack.push(2)
+stack.push(3)
+
+print(stack.pop())  # 输出: 3
+print(stack.peek()) # 输出: 2
+print(stack.size()) # 输出: 2
+```
+# 实现一个hashtable类，对外暴露的有add和get方法，满足以下测试代码
+```py
+class HashTable:
+    def __init__(self):
+        self.table = {}
+
+    def add(self, key, value):
+        self.table[key] = value
+
+    def get(self, key):
+        return self.table.get(key)
+
+# 测试代码
+def test():
+    import uuid
+    names = {"name", "web", "python"}  # 注意：这里应该是列表或元组，而不是集合
+    ht = HashTable()
+    for key in names:
+        value = uuid.uuid4()
+        ht.add(key, value)
+        print("add元素", key, value)
+
+    for key in names:
+        v = ht.get(key)
+        print("get元素", key, v)
+
+# 运行测试
+test()
+```
+# 请用两个队列来实现一个栈(给出伪代码即可）
+
 
 '''
+
 
