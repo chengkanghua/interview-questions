@@ -2024,12 +2024,237 @@ print(select(data)) # fld1|fld2|fld3|fld4|fld6|fld7|fld46
 - task[i]：值为0表示task  i未分配，值为j表示task,i分配给worker j
 - worker[k]值为o表示未分配task,值为1表示worker k已分配task;
 - mincost：最小总费用
+```py
+N = 8
+mincost = 65535
+worker = []
+task = []
+temp = []
+c = []
 
+def plan(k, cost):
+    global mincost
+    if k == N and cost < mincost:
+        mincost = cost
+        for i in range(N):
+            temp[i] = task[i]
+    else:
+        for i in range(N):
+            if worker[i] == 0 and c[k][i] != 0:
+                worker[i] = 1
+                task[k] = i
+                plan(k + 1, cost + c[k][i])
+                worker[i] = 0
+                task[k] = 0
+
+def main():
+    for i in range(N):
+        worker.append(0)
+        task.append(0)
+        temp.append(0)
+    for i in range(N):
+        c.append([])
+
+    for i in range(N):
+        for j in range(N):
+            print("请输入 worker" + str(i) + "完成 task" + str(j) + "的花费")
+            input_value = input()
+            c[i].append(int(input_value))
+
+    plan(0, 0)
+    print('\n 最小费用 :' + str(mincost))
+    for i in range(N):
+        print("Task" + str(i) + "is assigned to Worker" + str(temp[i]))
+
+if __name__ == "__main__":
+    main()
+```
+
+# 程序：写个函数接收一个文件夹名称作为参数，显示文件夹中文件的路径，以及其中包含文件夹中文件的路径。
+```py
+import os
+
+def list_files_in_folder(folder_name):
+    # 检查提供的路径是否为文件夹
+    if not os.path.isdir(folder_name):
+        print(f"The path {folder_name} is not a directory.")
+        return
+
+    # 遍历文件夹中的所有文件和子文件夹
+    for root, dirs, files in os.walk(folder_name):
+        # 打印当前文件夹的路径
+        print(f"Folder: {root}")
+        # 遍历文件夹中的所有文件
+        for file in files:
+            # 打印文件的完整路径
+            print(f"File: {os.path.join(root, file)}")
+
+# 使用函数
+folder_path = input("Enter the folder name: ")
+list_files_in_folder(folder_path)
+```
+
+# read、readline和 readlines 的区别?
+read:方法读取文件的全部内容，并将其作为一个字符串返回。
+readline：readline()方法读取文件的一行，并将其作为一个字符串返回。
+readlines：readlines()方法读取文件的所有行，并将它们作为一个字符串列表返回，每个字符串代表文件中的一行。
+
+```py
+# 假设有一个名为example.txt的文件，内容如下：
+# Line 1
+# Line 2
+# Line 3
+# 使用read()读取整个文件
+with open('example.txt', 'r') as file:
+    content = file.read()
+    print(content)  # 输出: Line 1\nLine 2\nLine 3
+
+# 使用readline()逐行读取
+with open('example.txt', 'r') as file:
+    line1 = file.readline()
+    line2 = file.readline()
+    line3 = file.readline()
+    print(line1)  # 输出: Line 1\n
+    print(line2)  # 输出: Line 2\n
+    print(line3)  # 输出: Line 3\n
+
+# 使用readlines()读取所有行
+with open('example.txt', 'r') as file:
+    lines = file.readlines()
+    print(lines)  # 输出: ['Line 1\n', 'Line 2\n', 'Line 3\n']
+
+```
+# 异常
+# 在 except中 return后还会不会执行finally中的代码？
+会继续处理finally中的代码
+# 怎么抛出自定义异常?
+用raise方法可以抛出自定义异常
+
+# 介绍一下 except的作用和用法？
+except的作用
+捕获异常：当程序运行时发生异常时，except块可以捕获这个异常，防止程序崩溃。
+处理异常：在except块中，可以编写代码来处理捕获到的异常，例如记录错误信息、尝试恢复操作、通知用户等。
+提供备选方案：如果异常发生，except块可以提供一个备选的执行路径，允许程序继续运行或优雅地终止。
+
+except的用法
+```py
+try:
+    # 尝试执行代码
+    #....
+except SomeException as e:
+    # 处理特定异常的代码
+
+# 捕获所有异常
+except:
+except Exception:
+except Exception as e:
+
+# 捕获特定异常
+except OSError:
+except OSError as e:
+
+# 模块与包
+# 常用的Python 标准库都有哪些？
+1.
+os：提供了一个使用操作系统功能的接口，如文件路径操作、进程管理等。
+2.
+sys：提供访问由Python解释器使用或维护的变量和与解释器强相关的函数。
+3.
+math：提供数学运算的函数，如三角函数、对数、幂运算等。
+4.
+datetime：用于处理日期和时间。
+5.
+json：用于处理JSON数据格式。
+6.
+re：提供正则表达式操作。
+7. functools：提供高阶函数，如partial、reduce、cache等。
+8. logging：用于配置和记录日志。
+9.http：提供HTTP客户端和服务器的实现。
+10. threading：提供多线程编程的接口。
+11. socket：提供底层网络通信的接口。
+
+
+```
+# 赋值、浅拷贝和深拷贝的区别？
+赋值：创建了对象的引用，两个变量指向同一个对象。
+浅拷贝：创建了对象的副本，但副本中的元素仍然是原始对象中元素的引用。
+深拷贝：创建了对象的副本，并递归地复制了原始对象中的所有元素。
+
+# Python 里面如何生成随机数？
+import random
+print(random.randint(1,10))
+# os.path 和 sys.path 分别代表什么?
+import os,sys
+print(os.path)
+print(sys.path)
+os.path是os模块中的一个子模块，它提供了一系列用于处理文件路径的函数。
+os.path.exists(path)：检查指定路径的文件或目录是否存在。
+os.path.isfile(path)：检查指定路径是否为文件。
+os.path.isdir(path)：检查指定路径是否为目录。
+os.path.join(path, *paths)：连接一个或多个路径部分。
+os.path.split(path)：分割路径为头和尾。
+os.path.abspath(path)：返回路径的绝对路径。
+os.path.basename(path)：返回路径的基本名称。
+os.path.dirname(path)：返回路径的目录名称。
+
+sys.path是Python解释器在导入模块时搜索的路径列表，可以被修改以改变模块搜索路径。
+这两个模块在处理文件和目录、导入模块时非常有用，是Python编程中经常用到的标准库组件。
+
+# unittest 是什么?
+unittest是Python标准库中的一个单元测试框架，它允许开发者编写和运行测试用例，以验证代码的各个部分（如函数、方法、类等）是否按预期工作。unittest提供了丰富的工具和功能，用于创建测试套件、测试用例、测试夹具（setup和teardown操作），以及生成测试报告。
+```py
+import unittest
+
+class TestStringMethods(unittest.TestCase):
+
+    def test_upper(self):
+        self.assertEqual('foo'.upper(), 'FOO')
+
+    def test_isupper(self):
+        self.assertTrue('FOO'.isupper())
+        self.assertFalse('Foo'.isupper())
+
+    def test_split(self):
+        s = 'hello world'
+        self.assertEqual(s.split(), ['hello', 'world'])
+        # check that s.split fails when the separator is not a string
+        with self.assertRaises(TypeError):
+            s.split(2)
+
+if __name__ == '__main__':
+    unittest.main()
+```
+
+# Python 里 match 与 search 的区别?
+在Python中，match和search都是re模块（正则表达式模块）中的函数，用于在字符串中搜索与正则表达式模式匹配的部分。它们的主要区别在于搜索的范围和位置。
+match
+```py
+import re
+
+pattern = r"foo"
+text = "foo bar"
+# 字符串text是不是以 foo开头,匹配成功返回对象,否则返回None
+match_obj = re.match(pattern, text)
+if match_obj:
+    print("Match found:", match_obj.group())
+else:
+    print("No match")
+```
+search
+
+```py
+import re
+
+pattern = r"foo"
+text = "bar foo"
+# text字符串中是不是有foo,找到返回对象,否则返回None
+search_obj = re.search(pattern, text)
+if search_obj:
+    print("Match found:", search_obj.group())
+else:
+    print("No match")
+```
+# 面向对象
 
 '''
-
-
-
-
-
 
