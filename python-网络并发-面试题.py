@@ -1,20 +1,19 @@
-import redis
+import re
 
-# 连接到Redis
-r = redis.Redis(host='localhost', port=6379, db=0)
+html_source = """
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+</html>
+"""
 
-# 监视一个键
-r.watch('key1')
-
-# 开启事务
-pipe = r.pipeline()
-
-# 尝试修改键
-pipe.set('key1', 'new_value')
-
-# 执行事务
-try:
-    results = pipe.execute()
-    print(results)
-except redis.WatchError:
-    print("Transaction aborted due to key change.")
+# 使用正则表达式匹配charset属性
+match = re.search(r'<meta charset="([^"]*)"', html_source)
+if match:
+    encoding = match.group(1)
+    print(f"HTML source encoding is: {encoding}")
+else:
+    print("No encoding found in HTML source.")
