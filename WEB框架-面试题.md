@@ -1755,3 +1755,56 @@ Django ORM（对象关系映射）提供了丰富的API来操作数据库，
 
 
 ## django 中的 F的作用?
+
+在Django中，`F`对象用于引用模型字段的值，而不需要从数据库中检索该值。这在需要对数据库中的字段值进行比较或更新时非常有用，尤其是在需要引用同一模型实例的多个字段时。
+
+### F对象的使用场景
+
+1. 1.**字段值比较**：在数据库层面直接比较两个字段的值，而不需要先将值加载到Python代码中。
+
+2. 2.**字段值更新**：在数据库层面直接更新字段的值，而不需要先从数据库中检索该值。
+
+### 示例
+
+假设有一个`Book`模型，其中包含`price`和`discount`字段：
+
+python
+
+
+
+复制
+
+```python
+from django.db import models
+
+class Book(models.Model):
+    title = models.CharField(max_length=100)
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+    discount = models.DecimalField(max_digits=5, decimal_places=2)
+```
+
+#### 字段值比较
+
+如果要查询`price`字段大于`discount`字段的书籍，可以使用`F`对象：
+
+```python
+from django.db.models import F
+
+# 查询price大于discount的书籍
+books = Book.objects.filter(price__gt=F('discount'))
+```
+
+#### 字段值更新
+
+如果要更新`price`字段的值，使其等于`price`字段的值加上`discount`字段的值，可以使用`F`对象：
+
+```python
+# 更新price字段的值
+Book.objects.update(price=F('price') + F('discount'))
+```
+
+### 注意事项
+
+- `F`对象在使用时需要从`django.db.models`导入。
+- 使用`F`对象进行字段值比较或更新时，操作直接在数据库层面执行，这可以提高性能，尤其是在处理大量数据时。
+- `F`对象可以用于任何支持字段查找的Django ORM方法，如`filter()`, `exclude()`, `update()`等。
