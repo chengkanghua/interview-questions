@@ -13,3 +13,4 @@ def hot_potato(children):
 children = list(range(1, 7))
 winner = hot_potato(children)
 print(f"排在第{winner}个位置的孩子最终会获胜。")
+
